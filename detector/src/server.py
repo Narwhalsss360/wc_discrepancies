@@ -42,7 +42,7 @@ def detect_endpoint():
             if progress.completed_student:
                 cfg.pgm_state['detect_progress_percent'] = None if progress.index == last else progress.index / last * 100
 
-        Log.out(Log('server:detect_endpoint:detect_thread', f'Detection started by {remote}.'))
+        Log.out(Log(5, 'server:detect_endpoint:detect_thread', f'Detection started by {remote}.'))
         new_discrepancies: list[Discrepancy] = detect_all_sync(wc_students, cfg.database_students, discrepancies, progress_reported)
         Log.out(Log(1, 'server:detect_endpoint:detect_thread', f'Detection finished. {len(new_discrepancies)} new discrepancies.'))
         discrepancies.extend(new_discrepancies)
