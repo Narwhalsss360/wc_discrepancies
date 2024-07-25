@@ -1,6 +1,7 @@
 from typing import Callable
 from threading import Thread
 from datetime import datetime
+from traceback import print_stack
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
@@ -41,9 +42,9 @@ def detect_endpoint():
             if progress.completed_student:
                 cfg.pgm_state['detect_progress_percent'] = None if progress.index == last else progress.index / last * 100
 
-        Log(1, 'server:detect_endpoint:detect_thread', f'Detection started by {remote}.')
+        Log.out(Log('server:detect_endpoint:detect_thread', f'Detection started by {remote}.'))
         new_discrepancies: list[Discrepancy] = detect_all_sync(wc_students, cfg.database_students, discrepancies, progress_reported)
-        Log(1, 'server:detect_endpoint:detect_thread', f'Detection finished. {len(new_discrepancies)} new discrepancies.')
+        Log.out(Log(1, 'server:detect_endpoint:detect_thread', f'Detection finished. {len(new_discrepancies)} new discrepancies.'))
         discrepancies.extend(new_discrepancies)
         cfg.commit_discrepancies(discrepancies)
         cfg.pgm_state['last_detect'] = datetime.now().isoformat()
@@ -97,7 +98,8 @@ def on_error(exc: Exception):
             'description': exc.description
         }), exc.code
 
-    Log(10, 'server:on_error', f'Fatal exception: {exc}')
+    Log.out(Log(10, 'server:on_error', f'Fatal exception: {exc}'))
+    print_stack()
 
     return jsonify({
         'fatal': repr(exc)
@@ -115,9 +117,9 @@ def main(use_cfg: Config):
     if 'detect_progress_percent' not in cfg.pgm_state:
         cfg.pgm_state['detect_progress_percent'] = None
 
-    Log(0, 'server:main', 'Server started')
+    Log.out(Log(0, 'server:main', 'Server started'))
     app.run('0.0.0.0', port=2155, use_reloader=False)
-    Log(0, 'server:main', 'Server stopped')
+    Log.out(Log(0, 'server:main', 'Server stopped'))
     cfg.save()
 
 

@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Any
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -13,10 +14,16 @@ class Log(dcdict):
     message: str
     at: str = field(default_factory=lambda: datetime.now().isoformat())
 
-    def __post_init__(self):
-        print(self)
+    @staticmethod
+    def out(log: Log) -> Log:
+        print(log)
         with open(Log.LOG_FILE, 'a', encoding='utf-8') as log_file:
-            log_file.write(f'{json.dumps(dict(self))}\n')
+            log_file.write(f'{json.dumps(dict(log))}\n')
+        return log
+
+    @staticmethod
+    def load(as_dict: dict) -> Log:
+        return Log(**as_dict, )
 
     @staticmethod
     def logs():
