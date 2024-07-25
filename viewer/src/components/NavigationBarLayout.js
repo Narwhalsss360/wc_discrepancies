@@ -32,6 +32,7 @@ export default function NavigationBarLayout() {
     })
     .catch(error => {
       console.log(`There was an error getting server state: ${error}`)
+      setServerState(null)
     })
   }, [setServerState])
 
@@ -73,7 +74,7 @@ export default function NavigationBarLayout() {
             <Navbar.Brand className='clickable' onClick={evt => navigate('/')}>Discrepancies Viewer</Navbar.Brand>
             {
               serverState === null ?
-              <Badge bg='danger'>Server state unkown</Badge> :
+              <Badge className='clickable' bg='danger'>Server state unkown</Badge> :
               <>
                 <Badge className='clickable' onClick={refreshServerState}>Server OK</Badge>
                 {
