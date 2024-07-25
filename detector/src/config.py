@@ -80,6 +80,7 @@ class Config(rdcdict):
             KeyMap('', '', ''),
             KeyMap('', '', ''),
             '',
+            '',
             {}
         )
 
