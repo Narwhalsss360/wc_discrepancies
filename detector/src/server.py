@@ -89,6 +89,30 @@ def resolve_endpoint():
     }), 400
 
 
+@app.route('/report-bug', methods=['PUT'])
+def report_bug_endpoint():
+    if not request.is_json:
+        return jsonify({
+            'error': f'Bug report must be json in body'
+        }), 400
+
+    if 'message' not in request.json:
+        return jsonify({
+            'error': f'Bug report object must contain message'
+        }), 400
+
+    report = dict(request.json)
+    report['at'] = datetime.now().isoformat()
+    report['remote'] = request.remote_addr
+    report['addressed'] = False
+    if 'bug_report' not in cfg.pgm_state:
+        cfg.pgm_state['bug_reports'] = []
+
+    cfg.pgm_state['bug_reports'].append(report)
+    cfg.save()
+    Log.out(Log(10, 'server:report_bug_endpoint', f'Bug reported: {report}'))
+    return Response(status=200)
+
 @app.errorhandler(Exception)
 def on_error(exc: Exception):
     if isinstance(exc, HTTPException):
