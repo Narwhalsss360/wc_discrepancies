@@ -24,6 +24,7 @@ export default function NavigationBarLayout() {
   const [autoRefreshInterval, setAutoRefreshInterval] = useState(DEFAULT_AUTO_REFRESH_INTERVAL)
   const setServerError = useServerError()[1]
   const isFirstLoad = useRef(true)
+  const detecting = useRef(false)
 
   const refreshServerState = useCallback(() => {
     call(status)
@@ -41,6 +42,7 @@ export default function NavigationBarLayout() {
       return
     }
     isFirstLoad.current = false
+    detecting.previous = detecting.current
     refreshServerState()
   }, [isFirstLoad, refreshServerState])
 
@@ -55,8 +57,15 @@ export default function NavigationBarLayout() {
     if (serverState === null) {
       return
     }
-    setAutoRefreshInterval(serverState.detect_progress_percent === null ? DEFAULT_AUTO_REFRESH_INTERVAL : FAST_AUTO_REFRESH_INTERVAL)
-  }, [serverState, setAutoRefreshInterval])
+    detecting.current = serverState.detect_progress_percent !== null
+
+    setAutoRefreshInterval(detecting.current ? FAST_AUTO_REFRESH_INTERVAL : DEFAULT_AUTO_REFRESH_INTERVAL)
+
+    if (!detecting.current && detecting.previous) {
+      detecting.previous = detecting.current
+      refreshServerState()
+    }
+  }, [serverState, setAutoRefreshInterval, detecting, refreshServerState])
 
   const detect = useCallback(() => {
     call(apiDetect)
@@ -64,7 +73,8 @@ export default function NavigationBarLayout() {
       setServerError(error)
       navigate('server-error')
     })
-  }, [setServerError, navigate])
+    refreshServerState()
+  }, [setServerError, navigate, refreshServerState])
 
   return (
     <>
