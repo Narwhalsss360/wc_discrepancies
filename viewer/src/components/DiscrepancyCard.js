@@ -35,7 +35,12 @@ export default function DiscrepancyCard({ discrepancy }) {
       </Card.Header>
       <Card.Body>
         <Card.Title>
-          {discrepancy.message}
+          <label style={{textDecoration: discrepancy.resolved_by === null ? 'auto' : 'line-through'}}>
+            {discrepancy.message}
+          </label>
+          {
+            discrepancy.resolved_by !== null && <strong className='clickable' onClick={moreDetail}> Resolved</strong>
+          }
         </Card.Title>
         <Card.Text>
           <label><strong>Who: </strong>{bestInfo(discrepancy).first} {bestInfo(discrepancy).last}</label><br />
