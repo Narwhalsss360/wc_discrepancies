@@ -3,7 +3,7 @@ import React from 'react'
 export default function Resolving() {
   return (
     <h1>
-      Resolving
+      Resolving Not Implemented
     </h1>
   )
 }
