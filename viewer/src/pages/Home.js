@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Matrix from '../components/Matrix'
 import DiscrepancyCard from '../components/DiscrepancyCard'
-import Spinner from 'react-bootstrap/Spinner'
 import call from '../api/call'
 import apiDiscrepancies from '../api/discrepancies'
 import useServerError from '../hooks/useServerError'
 import { useNavigate } from 'react-router-dom'
+import PageLoading from '../components/PageLoading'
 
 export default function Home() {
   const [discrepancies, setDiscrepancies] = useState(null)
@@ -35,10 +35,10 @@ export default function Home() {
 
   return (
     discrepancies === null ?
-    <Spinner /> :
-    <Matrix columns={4}>
+    <PageLoading /> :
+    <Matrix columns={3}>
       {
-        discrepancies.map(discrepancy => <DiscrepancyCard discrepancy={discrepancy} />)
+        discrepancies.map(discrepancy => <DiscrepancyCard key={`DiscrepancyCard:${discrepancy.wc_info.first}-${discrepancy.wc_info.last}-${discrepancy.wc_info.id}`} discrepancy={discrepancy} />)
       }
     </Matrix>
   )

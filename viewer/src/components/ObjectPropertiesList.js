@@ -32,7 +32,7 @@ export default function ObjectPropertiesList({ object }) {
                     value.constructor === Array ?
                     <ol>
                       {
-                        value.forEach(valueItem => (<li>{recurse(valueItem, childKey, depth + 1)}</li>))
+                        value.map((valueItem, index) => (<li key={`Array(${childKey})[${index}]`}>{recurse(valueItem, childKey, depth + 1)}</li>))
                       }
                     </ol> :
                     <>

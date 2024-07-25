@@ -1,11 +1,16 @@
 import React, { useCallback } from 'react'
 import useSelectedDiscrepancy from '../hooks/useSelectedDiscrepancy'
+import bestInfo from '../api/bestInfo'
 import Card from 'react-bootstrap/Card'
-import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import '../styles/push-right.css'
+import Image from 'react-bootstrap/Image'
 import { useNavigate } from 'react-router-dom'
+import '../styles/push-right.css'
+import '../styles/discrepancy-card.css'
+import '../styles/center-block.css'
+import '../styles/center-flex.css'
+import '../styles/clickable.css'
 
 export default function DiscrepancyCard({ discrepancy }) {
   const setSelectedDiscrepancy = useSelectedDiscrepancy()[1]
@@ -17,16 +22,14 @@ export default function DiscrepancyCard({ discrepancy }) {
   }, [discrepancy, navigate, setSelectedDiscrepancy])
 
   return (
-    <Card>
+    <Card className='discrepancy-card'>
       <Card.Header>
-        <Row>
+        <Row className='center-flex'>
           <Col>
-            <label>
-              Type: {discrepancy.type}
-            </label>
+            <strong>Type: </strong><label>{discrepancy.type}</label>
           </Col>
           <Col className='push-right'>
-            <Button onClick={moreDetail}>More Details</Button>
+            <Image className='clickable' onClick={moreDetail} height='24' src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Infobox_info_icon.svg/1200px-Infobox_info_icon.svg.png'/>
           </Col>
         </Row>
       </Card.Header>
@@ -34,7 +37,18 @@ export default function DiscrepancyCard({ discrepancy }) {
         <Card.Title>
           {discrepancy.message}
         </Card.Title>
+        <Card.Text>
+          <label><strong>Who: </strong>{bestInfo(discrepancy).first} {bestInfo(discrepancy).last}</label><br />
+          <label><strong>{discrepancy.similar.length}</strong> Similar</label>
+        </Card.Text>
       </Card.Body>
+      <Card.Footer>
+        <Row className='center-flex'>
+          <Col>
+            <strong>Discovered: </strong><label>{discrepancy.discovered}</label>
+          </Col>
+        </Row>
+      </Card.Footer>
     </Card>
   )
 }

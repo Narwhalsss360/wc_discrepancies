@@ -1,0 +1,13 @@
+.margin-children * {
+  margin: 10px;
+}
+
+.margin-children-horizontal * {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.margin-children-vertical * {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
