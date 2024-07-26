@@ -7,6 +7,7 @@ from datatypes import Discrepancy
 from detection import detect_all_sync
 from discrepancy_logging import Log
 
+
 def show(cfg: Config):
     def show_logs():
         for log in Log.logs():
@@ -28,6 +29,7 @@ def show(cfg: Config):
     else:
         print(f'No valid command found, valid are: {cmds.keys()}')
 
+
 def detect(cfg: Config):
     discrepancies: list[Discrepancy] = cfg.discrepancies
 
@@ -39,11 +41,12 @@ def detect(cfg: Config):
 
     cfg.commit_discrepancies(discrepancies)
 
+
 def main(cfg: Config):
     cfg.ensure_valid()
     cmds: dict[str, Callable[[Config]], None] = {
         'show': show,
-        'detect': detect
+        'detect': detect,
     }
 
     for cmd in cmds.keys():
