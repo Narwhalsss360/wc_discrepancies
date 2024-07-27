@@ -28,7 +28,12 @@ def logs_endpoint():
 
 @app.route('/discrepancies', methods=['GET'])
 def discrepancies_endpoint():
-    return jsonify(cfg.discrepancies), 200
+    return jsonify(list(filter(lambda discrepancy: discrepancy.resolved_by is None, cfg.discrepancies))), 200
+
+
+@app.route('/resolved_discrepancies', methods=['GET'])
+def resolved_discrepancies_endpoint():
+    return jsonify(list(filter(lambda discrepancy: discrepancy.resolved_by is not None, cfg.discrepancies))), 200
 
 
 @app.route('/detect', methods=['POST'])
