@@ -1,8 +1,10 @@
+from sys import argv
 from typing import Callable
 from threading import Thread
 from datetime import datetime
 from traceback import print_stack, format_stack
 from flask import Flask, jsonify, request, Response
+from waitress import serve
 from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
 from .config import Config
@@ -136,6 +138,13 @@ def on_error(exc: Exception):
     }), 500
 
 
+def start_server():
+    if 'debug' in argv:
+        app.run('0.0.0.0', port=2155, use_reloader=False, threaded=True)
+    else:
+        serve(app, host='0.0.0.0', port=2155, threads=2)
+
+
 def main(use_cfg: Config):
     global cfg
     if not use_cfg.valid:
@@ -148,7 +157,7 @@ def main(use_cfg: Config):
         cfg.pgm_state['detect_progress_percent'] = None
 
     Log.out(Log(0, 'server:main', 'Server started'))
-    app.run('0.0.0.0', port=2155, use_reloader=False)
+    start_server()
     Log.out(Log(0, 'server:main', 'Server stopped'))
     cfg.save()
 
