@@ -2,10 +2,10 @@ from sys import argv
 from os.path import isfile
 from typing import Callable
 from datetime import datetime
-from config import Config
-from datatypes import Discrepancy
-from detection import detect_all_sync
-from discrepancy_logging import Log
+from .config import Config
+from .datatypes import Discrepancy
+from .detection import detect_all_sync
+from .discrepancy_logging import Log
 
 
 def show(cfg: Config):

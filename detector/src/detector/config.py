@@ -4,8 +4,8 @@ from dataclasses import dataclass, fields
 from os.path import isfile, getmtime
 from time import time
 from json import loads, dumps
-from datatypes import dcdict, rdcdict, Discrepancy, Student
-from wc import secure_wc_key, wc_data
+from .datatypes import dcdict, rdcdict, Discrepancy, Student
+from .wc import secure_wc_key, wc_data
 
 
 @dataclass

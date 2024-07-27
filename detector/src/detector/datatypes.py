@@ -2,9 +2,9 @@ from __future__ import annotations
 from typing import Any
 from datetime import datetime
 from dataclasses import dataclass, asdict, is_dataclass, fields
-from errors import DataError
 import json
 from enum import Enum
+from .errors import DataError
 
 
 def jsonl_loads(text: str, *args, **kwargs):

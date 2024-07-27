@@ -3,7 +3,7 @@ from typing import Any
 from dataclasses import dataclass, field
 from datetime import datetime
 import json
-from datatypes import dcdict, jsonl_loads
+from .datatypes import dcdict, jsonl_loads
 
 @dataclass
 class Log(dcdict):

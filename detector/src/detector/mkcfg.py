@@ -1,5 +1,5 @@
 from os.path import isfile
-from config import Config
+from .config import Config
 
 
 def mkcfg():

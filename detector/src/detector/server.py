@@ -5,10 +5,10 @@ from traceback import print_stack, format_stack
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
-from config import Config
-from discrepancy_logging import Log
-from datatypes import Discrepancy, Student
-from detection import detect_all_sync, ProgressReport
+from .config import Config
+from .discrepancy_logging import Log
+from .datatypes import Discrepancy, Student
+from .detection import detect_all_sync, ProgressReport
 
 
 app = Flask(__name__)

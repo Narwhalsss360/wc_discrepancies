@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "detector"
+authors = [
+    {name = "Franklyn Vasquez", email = "franklynvasquez24@gmail.com"},
+]
+description = "Program for detecting student information discrepancy on WC Online, as well as serving a REST API"
+readme = "README.md"
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "requests",
+    "flask",
+    "flask_cors",
+    "waitress"
+]
+dynamic = ["version"]
+
+[project.scripts]
+wc-detector = "detector.__main__:main"

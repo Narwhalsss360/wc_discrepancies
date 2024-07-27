@@ -1,8 +1,8 @@
 from os import system, name
 from sys import argv
-import terminal
-import server
-from config import Config
+from . import terminal
+from . import server
+from .config import Config
 
 def cls():
     system('cls' if name == 'nt' else 'clear')

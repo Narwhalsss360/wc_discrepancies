@@ -1,6 +1,6 @@
 from typing import Callable
 from dataclasses import dataclass
-from datatypes import Student, Discrepancy, DiscrepancyType
+from .datatypes import Student, Discrepancy, DiscrepancyType
 
 
 def prepare(s: str) -> bool:
