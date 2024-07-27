@@ -7,11 +7,15 @@ import useServerError from '../hooks/useServerError'
 import { useNavigate } from 'react-router-dom'
 import PageLoading from '../components/PageLoading'
 
+const PIXELS_PER_COLUMN = 550
+const calculateColumnCount = () => Math.ceil(visualViewport.width / PIXELS_PER_COLUMN)
+
 export default function Home() {
   const [discrepancies, setDiscrepancies] = useState(null)
   const setServerError = useServerError()[1]
   const navigate = useNavigate()
   const isFirstLoad = useRef(true)
+  const columnCount = calculateColumnCount()
 
   const refreshDiscrepancies = useCallback(() => {
     call(apiDiscrepancies)
@@ -36,7 +40,7 @@ export default function Home() {
   return (
     discrepancies === null ?
     <PageLoading /> :
-    <Matrix columns={3}>
+    <Matrix columns={columnCount}>
       {
         discrepancies.map(discrepancy => <DiscrepancyCard key={`DiscrepancyCard:${discrepancy.wc_info.first}-${discrepancy.wc_info.last}-${discrepancy.wc_info.id}`} discrepancy={discrepancy} />)
       }
