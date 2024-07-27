@@ -84,7 +84,7 @@ export default function NavigationBarLayout() {
             <Navbar.Brand className='clickable' onClick={evt => navigate('/')}>Discrepancies Viewer</Navbar.Brand>
             {
               serverState === null ?
-              <Badge className='clickable' bg='danger'>Server state unkown</Badge> :
+              <Badge className='clickable' bg='danger' onClick={refreshServerState}>Server state unkown</Badge> :
               <>
                 <Badge className='clickable' onClick={refreshServerState}>Server OK</Badge>
                 {
