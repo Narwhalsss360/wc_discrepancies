@@ -1,7 +1,7 @@
 from typing import Callable
 from threading import Thread
 from datetime import datetime
-from traceback import print_stack
+from traceback import print_stack, format_stack
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
@@ -126,7 +126,8 @@ def on_error(exc: Exception):
     print_stack()
 
     return jsonify({
-        'fatal': repr(exc)
+        'fatal': repr(exc),
+        'stack': format_stack()
     }), 500
 
 

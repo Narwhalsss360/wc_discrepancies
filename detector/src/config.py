@@ -78,7 +78,7 @@ class Config(rdcdict):
             return []
 
         cached, cache_load_time = self._discrepancies_cache
-        if cached is not None and getmtime(self._discrepancies_cache) <= cache_load_time:
+        if cached is not None and getmtime(Config.DISCREPANCIES_FILE) <= cache_load_time:
             return cached
 
         with open(Config.DISCREPANCIES_FILE, 'r', encoding='utf-8') as discrepancies_file:
