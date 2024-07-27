@@ -8,6 +8,7 @@ import Help from './pages/Help'
 import Logs from './pages/Logs'
 import ReportBug from './pages/ReportBug'
 import Resolve from './pages/Resolve'
+import ResolvedDiscrepancies from './pages/ResolvedDiscrepancies'
 
 export const SelectedDiscrepancyContext = createContext(null)
 export const ServerErrorContext = createContext(null)
@@ -23,6 +24,7 @@ export default function App() {
           <Routes>
             <Route path='/' element={<NavigationBarLayout />}>
               <Route index element={<Home />} />
+              <Route path='resolved-discrepancies' element={<ResolvedDiscrepancies />} />
               <Route path='details' element={<Details />} />
               <Route path='server-error' element={<ServerError />} />
               <Route path='logs' element={<Logs />} />

@@ -6,6 +6,7 @@ import PageLoading from '../components/PageLoading'
 import DiscrepancyCard from '../components/DiscrepancyCard'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
+import Button from 'react-bootstrap/Button'
 import call from '../api/call'
 import apiDiscrepancies from '../api/discrepancies'
 import { isPrintable } from '../components/ObjectPropertiesList'
@@ -94,10 +95,11 @@ export default function Home() {
 
   return (
     <Container style={{maxWidth: 'none', width: '100%'}}>
-       <Row className='center-flex'>
-          <input style={{width: '80%'}} placeholder='Search' value={query} onChange={evt => setQuery(evt.target.value)}/>
-        </Row>
-        <Row>
+      <Row className='center-flex'>
+        <input style={{width: '70%', margin: '10px'}} placeholder='Search' value={query} onChange={evt => setQuery(evt.target.value)}/>
+        <Button style={{width: '5%', margin: '10px'}} variant='outline-danger' onClick={evt => navigate('/resolved-discrepancies')}>Resolved</Button>
+      </Row>
+      <Row>
         {
           filteredDiscrepancies === null ?
           <PageLoading /> :
