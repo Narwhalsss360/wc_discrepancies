@@ -1,6 +1,6 @@
 import React from 'react'
 
-function isPrintable(object) {
+export function isPrintable(object) {
   return typeof object != "object"
 }
 
