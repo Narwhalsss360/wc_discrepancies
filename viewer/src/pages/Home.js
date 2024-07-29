@@ -97,7 +97,7 @@ export default function Home() {
     <Container style={{maxWidth: 'none', width: '100%'}}>
       <Row className='center-flex'>
         <input style={{width: '70%', margin: '10px'}} placeholder='Search' value={query} onChange={evt => setQuery(evt.target.value)}/>
-        <Button style={{width: '5%', margin: '10px'}} variant='outline-danger' onClick={evt => navigate('/resolved-discrepancies')}>Resolved</Button>
+        <Button style={{width: '6%', margin: '10px'}} variant='outline-danger' onClick={evt => navigate('/resolved-discrepancies')}>Resolved</Button>
       </Row>
       <Row>
         {
