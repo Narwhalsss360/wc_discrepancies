@@ -20,7 +20,7 @@ export default function Details() {
 
   return (
     <Container>
-      <Col>
+      <Col style={{padding: '15px'}}>
         <Row>
           <h1 align='center'>Discrepancy Details</h1>
           <Button variant='outline-danger' onClick={evt => navigate('/resolve')} disabled={selectedDiscrepancy.resolved_by !== null}>Resolve</Button>

@@ -33,7 +33,7 @@ export default function ReportBug() {
       <Form onSubmit={report} className='margin-children' style={{width: '40%'}}>
         <Form.Control type='text' placeholder='Enter a bug report...' value={message} onChange={evt => setMessage(evt.target.value)} style={{margin: 'auto'}} />
         <Row>
-          <Button type='submit' disabled={submitting} style={{width: '30%', margin: 'auto'}}>Sumbit</Button>
+          <Button type='submit' disabled={submitting} style={{width: visualViewport.width < 700 ? '100%' : '30%', margin: 'auto'}}>Sumbit</Button>
         </Row>
       </Form>
     </SmallPage>

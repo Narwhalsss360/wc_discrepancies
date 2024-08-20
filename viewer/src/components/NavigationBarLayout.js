@@ -12,6 +12,7 @@ import status from '../api/status'
 import apiDetect from '../api/detect'
 import '../styles/clickable.css'
 import '../styles/navbar-children-margin.css'
+import '../styles/margin-children.css'
 import '../styles/navbar-inner.css'
 import '../styles/push-right.css'
 import '../styles/page-outlet-container.css'
@@ -53,8 +54,8 @@ function WideWindowNavbarChildren({ navigate, serverState, refreshServerState, d
 
 function NarrowWindowNavbarChildren({ navigate, serverState, refreshServerState, detect }) {
   return (
-    <NavDropdown title='Menu' className='navbar-inner' style={{background: 'lawngreen', margin: '15pxa'}}>
-      <Button onClick={evt => navigate('/')}>Home</Button>
+    <NavDropdown title='Menu' className='navbar-inner margin-children' style={{background: 'lawngreen', margin: '15pxa'}}>
+      <Button onClick={evt => navigate('/')}>Home</Button>&nbsp;
       {
         serverState === null ?
         <Badge className='clickable' bg='danger' onClick={refreshServerState}>Server state unkown</Badge> :
@@ -70,11 +71,11 @@ function NarrowWindowNavbarChildren({ navigate, serverState, refreshServerState,
             <Badge bg='danger'>Detection Progress: {serverState.detect_progress_percent.toFixed(2)}%</Badge>
           }
         </>
-      }
-      <Button onClick={evt => navigate('/report-bug ')} variant='danger'>Report Bug</Button>
-      <Button onClick={evt => navigate('/logs')}>Logs</Button>
-      <Button variant='outline-warning' onClick={detect} disabled={serverState?.detect_progress_percent !== null}>Detect</Button>
-      <Button variant='outline-info' onClick={evt => navigate('/help')} style={{marginRight: '10px'}}>?</Button>
+      }&nbsp;
+      <Button onClick={evt => navigate('/report-bug ')} variant='danger'>Report Bug</Button>&nbsp;
+      <Button onClick={evt => navigate('/logs')}>Logs</Button>&nbsp;
+      <Button variant='outline-warning' onClick={detect} disabled={serverState?.detect_progress_percent !== null}>Detect</Button>&nbsp;
+      <Button variant='outline-info' onClick={evt => navigate('/help')} style={{marginRight: '10px'}}>?</Button>&nbsp;
     </NavDropdown>
   )
 }
