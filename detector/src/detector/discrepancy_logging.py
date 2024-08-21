@@ -16,7 +16,7 @@ class Log(dcdict):
 
     @staticmethod
     def out(log: Log) -> Log:
-        print(log)
+        print(f'DETECTOR: {log}')
         with open(Log.LOG_FILE, 'a', encoding='utf-8') as log_file:
             log_file.write(f'{json.dumps(dict(log))}\n')
         return log
