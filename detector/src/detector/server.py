@@ -47,13 +47,17 @@ def detect_endpoint():
         last: int = len(wc_students) - 1
         def progress_reported(progress: ProgressReport):
             if progress.completed_student:
+                cfg.pgm_state['step'] = f'{progress.index + 1}/{last + 1}: {progress.student.first} {progress.student.last}'
                 cfg.pgm_state['detect_progress_percent'] = None if progress.index == last else progress.index / last * 100
 
         Log.out(Log(5, 'server:detect_endpoint:detect_thread', f'Detection started by {remote}.'))
+        cfg.pgm_state['step'] = 'Initializing'
+        cfg.pgm_state['detection_progress_percent'] = 0.0
         completed_detection: ProgressReport = detect_all_sync(wc_students, cfg.database_students, discrepancies, progress_reported)
         Log.out(Log(1, 'server:detect_endpoint:detect_thread', f'Detection finished. {len(completed_detection.new_discrepancies)} new discrepancies.'))
         cfg.commit_discrepancies(completed_detection.discrepancies)
         cfg.pgm_state['last_detect'] = datetime.now().isoformat()
+        cfg.pgm_state.pop('step')
 
 
     if cfg.pgm_state['detect_progress_percent'] is not None:
