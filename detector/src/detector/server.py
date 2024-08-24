@@ -52,7 +52,7 @@ def detect_endpoint():
 
         Log.out(Log(5, 'server:detect_endpoint:detect_thread', f'Detection started by {remote}.'))
         cfg.pgm_state['step'] = 'Initializing'
-        cfg.pgm_state['detection_progress_percent'] = 0.0
+        cfg.pgm_state['detect_progress_percent'] = 0.0
         completed_detection: ProgressReport = detect_all_sync(wc_students, cfg.database_students, discrepancies, progress_reported)
         Log.out(Log(1, 'server:detect_endpoint:detect_thread', f'Detection finished. {len(completed_detection.new_discrepancies)} new discrepancies.'))
         cfg.commit_discrepancies(completed_detection.discrepancies)
