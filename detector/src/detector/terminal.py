@@ -4,7 +4,7 @@ from typing import Callable
 from datetime import datetime
 from .config import Config
 from .datatypes import Discrepancy
-from .detection import detect_all_sync
+from .detection import detect_all_sync, ProgressReport
 from .discrepancy_logging import Log
 
 
@@ -31,15 +31,14 @@ def show(cfg: Config):
 
 
 def detect(cfg: Config):
-    discrepancies: list[Discrepancy] = cfg.discrepancies
+    discrepancies: set[Discrepancy] = cfg.discrepancies
 
     Log.out(Log(1, 'terminal:detect', 'Detetion started...'))
-    new_discrepancies: list[Discrepancy] = detect_all_sync(cfg.wc_students, cfg.database_students, discrepancies)
-    Log.out((1, 'terminal:detect', f'Detection finished. {len(new_discrepancies)} new discrepancies.'))
-    discrepancies.extend(discrepancies)
+    completed_detection: ProgressReport = detect_all_sync(cfg.wc_students, cfg.database_students, discrepancies)
+    Log.out(Log(1, 'terminal:detect', f'Detection finished. {len(completed_detection.new_discrepancies)} new discrepancies.'))
     cfg.pgm_state['last_detect'] = datetime.now().isoformat()
 
-    cfg.commit_discrepancies(discrepancies)
+    cfg.commit_discrepancies(completed_detection.discrepancies)
 
 
 def main(cfg: Config):

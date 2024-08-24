@@ -42,7 +42,7 @@ def detect_agaisnt(student: Student, db_students: list[Student]) -> Discrepancy 
     return None
 
 
-def is_already_detected(student: Student, discrepancies: list[Discrepancy]) -> bool:
+def is_already_detected(student: Student, discrepancies: set[Discrepancy]) -> bool:
     if not discrepancies:
         return False
     return any(student == discrepancy.wc_info for discrepancy in discrepancies)
@@ -53,18 +53,31 @@ class ProgressReport:
     index: int
     student: Student
     completed_student: bool
-    discrepancies: list[Discrepancy]
-    existing_discrepancies: list[Discrepancy]
+    new_discrepancies: set[Discrepancy]
+    existing_discrepancies: set[Discrepancy]
+    discrepancies: set[Discrepancy]
 
 
-def detect_all_sync(wc_students: list[Student], db_students: list[Student], existing_discrepancies: list[Discrepancy], progress_reporter: Callable[[ProgressReport], None] = None) -> list[Discrepancy]:
+def detect_resolved(existing_discrepancies: set[Discrepancy], wc_students: list[Student], db_students: list[Student]) -> None:
+    for existing_discrepancy in existing_discrepancies:
+        if existing_discrepancy.resolved_by is not None:
+            continue
+        if existing_discrepancy.wc_info not in wc_students:
+            existing_discrepancy._resolved_from_wc()
+
+
+
+def detect_all_sync(wc_students: list[Student], db_students: list[Student], existing_discrepancies: set[Discrepancy], progress_reporter: Callable[[ProgressReport], None] = None) -> ProgressReport:
     if progress_reporter is None:
         progress_reporter: Callable[[ProgressReport], None] = lambda progress: None
     progress = ProgressReport(index=0,
                               student=None,
                               completed_student=False,
-                              discrepancies=[],
-                              existing_discrepancies=existing_discrepancies)
+                              new_discrepancies=[],
+                              existing_discrepancies=existing_discrepancies,
+                              discrepancies=list(existing_discrepancies))
+
+    detect_resolved(existing_discrepancies, wc_students, db_students)
 
     for index, student in enumerate(wc_students):
         progress.index = index
@@ -78,7 +91,8 @@ def detect_all_sync(wc_students: list[Student], db_students: list[Student], exis
 
         progress_reporter(progress)
         if (discrepancy := detect_agaisnt(student, db_students)) is not None:
-            progress.discrepancies.append(discrepancy)
+            progress.new_discrepancies.append(discrepancy)
         progress.completed_student = True
         progress_reporter(progress)
-    return progress.discrepancies
+    progress.discrepancies.extend(progress.new_discrepancies)
+    return progress

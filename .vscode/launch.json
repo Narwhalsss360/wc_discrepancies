@@ -19,6 +19,20 @@
       ]
     },
     {
+      "name": "Python Debugger (.venv): detector terminal detect",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "detector",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "windows": {
+        "python": "${workspaceFolder}/.venv/Scripts/python.exe"
+      },
+      "args": [
+        "terminal",
+        "detect"
+      ]
+    },
+    {
       "name": "Python Debugger (.venv): Current File",
       "type": "debugpy",
       "request": "launch",

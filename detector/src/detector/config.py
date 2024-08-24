@@ -73,7 +73,7 @@ class Config(rdcdict):
         return [Student.use_keys(dict(self.wc_keys), data) for data in wc_data(secure_wc_key(self.api_key))]
 
     @property
-    def discrepancies(self) -> list[Discrepancy]:
+    def discrepancies(self) -> set[Discrepancy]:
         if not isfile(Config.DISCREPANCIES_FILE):
             return []
 
@@ -82,12 +82,12 @@ class Config(rdcdict):
             return cached
 
         with open(Config.DISCREPANCIES_FILE, 'r', encoding='utf-8') as discrepancies_file:
-            discrepancies: list[Discrepancy] = [Discrepancy(**discrepancy) for discrepancy in (loads(discrepancies_file.read()))]
+            discrepancies: set[Discrepancy] = {Discrepancy(**discrepancy) for discrepancy in (loads(discrepancies_file.read()))}
 
         self._discrepancies_cache = discrepancies, time()
         return discrepancies
 
-    def commit_discrepancies(self, discrepancies: list[Discrepancy]) -> None:
+    def commit_discrepancies(self, discrepancies: set[Discrepancy]) -> None:
         with open(Config.DISCREPANCIES_FILE, 'w', encoding='utf-8') as discrepancies_file:
             discrepancies_file.write(dumps([dict(discrepancy) for discrepancy in discrepancies], indent=4))
         self._discrepancies_cache = discrepancies, time()

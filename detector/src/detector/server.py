@@ -43,17 +43,16 @@ def detect_endpoint():
     remote: str = request.remote_addr
     def detect_thread():
         wc_students: list[Student] = cfg.wc_students
-        discrepancies: list[Discrepancy] = cfg.discrepancies
+        discrepancies: set[Discrepancy] = cfg.discrepancies
         last: int = len(wc_students) - 1
         def progress_reported(progress: ProgressReport):
             if progress.completed_student:
                 cfg.pgm_state['detect_progress_percent'] = None if progress.index == last else progress.index / last * 100
 
         Log.out(Log(5, 'server:detect_endpoint:detect_thread', f'Detection started by {remote}.'))
-        new_discrepancies: list[Discrepancy] = detect_all_sync(wc_students, cfg.database_students, discrepancies, progress_reported)
-        Log.out(Log(1, 'server:detect_endpoint:detect_thread', f'Detection finished. {len(new_discrepancies)} new discrepancies.'))
-        discrepancies.extend(new_discrepancies)
-        cfg.commit_discrepancies(discrepancies)
+        completed_detection: ProgressReport = detect_all_sync(wc_students, cfg.database_students, discrepancies, progress_reported)
+        Log.out(Log(1, 'server:detect_endpoint:detect_thread', f'Detection finished. {len(completed_detection.new_discrepancies)} new discrepancies.'))
+        cfg.commit_discrepancies(completed_detection.discrepancies)
         cfg.pgm_state['last_detect'] = datetime.now().isoformat()
 
 
@@ -81,7 +80,7 @@ def resolve_endpoint():
             'error': f'Must put a Discrepancy as json in body'
         }), 400
 
-    discrepancies: list[Discrepancy] = cfg.discrepancies
+    discrepancies: set[Discrepancy] = cfg.discrepancies
     for discrepancy in discrepancies:
         compare: Callable = lambda: discrepancy.discovered == resolved_discrepancy.discovered and \
                         discrepancy.wc_info == discrepancy.wc_info

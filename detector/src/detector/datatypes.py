@@ -108,7 +108,7 @@ class DiscrepancyType(Enum):
 
 @dataclass
 class Discrepancy(rdcdict):
-    RESOLVED_FROM_WC = 'RESOLVED_FROM_WC'
+    RESOLVED_FROM_WC = 'WC INFO CHANGED'
 
     type: str
     student_info: Student | None
@@ -152,10 +152,13 @@ class Discrepancy(rdcdict):
         return self
 
     def _resolved_from_wc(self) -> Discrepancy:
-        self.resolve_message = 'The data has been resolved on WC Online'
+        self.resolve_message = 'The data has been changed on WC Online, this discrepancy is invalid.'
         self.resolved_by = Discrepancy.RESOLVED_FROM_WC
         return self
 
     @staticmethod
     def new(type: DiscrepancyType, student_info: Student, wc_info: Student, message: str, similar: list[Student]) -> Discrepancy:
         return Discrepancy(type, student_info, wc_info, datetime.now().isoformat(), message, None, None, similar)
+
+    def __hash__(self) -> int:
+        return hash((self.student_info or self.wc_info).id)
